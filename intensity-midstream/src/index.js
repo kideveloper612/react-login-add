@@ -188,6 +188,112 @@ class ProjectNames extends React.Component {
 
 }
 
+class PaymentForm extends React.Component {
+	constructor() {
+		super();
+	}
+
+	state = {
+		paymentforms: [1]
+	}
+
+	addPayment = () => {
+		var { paymentforms } = this.state;
+		paymentforms.push(1);
+		this.setState({ paymentforms });
+	}
+
+	removePayment = (index) => {
+		var { paymentforms } = this.state
+		paymentforms.splice(index, 1);
+		this.setState({ paymentforms })
+
+	}
+
+	render() {
+		var { paymentforms } = this.state;
+
+		return (
+			<div>
+				<div className="col-12 col-sm-6 col-md-5 col-lg-5"><h5 className="mt-5">Payment Records</h5></div>
+				<div className="form-group payment-group">
+					<div className="col-12 col-sm-12 col-md-12 col-lg-12">
+						<div className="row">
+							<div className="col-12 col-sm-6 col-md-3 col-lg-3">
+								<label htmlFor="check-date">Date</label>
+							</div>
+							<div className="col-12 col-sm-6 col-md-3 col-lg-2">
+								<label htmlFor="payee">Payee</label>
+							</div>
+							<div className="col-12 col-sm-6 col-md-3 col-lg-2">
+								<label htmlFor="check-number">Trans #</label>
+							</div>
+							<div className="col-12 col-sm-6 col-md-2 col-lg-2">
+								<label htmlFor="pmtamt">Payment Amount</label>
+							</div>
+							<div className="col-12 col-sm-6 col-md-3 col-lg-2">
+								<label htmlFor="pmtamt">Memo</label>
+							</div>
+						</div>
+						<hr className="seperate-bar" />
+					</div>
+					{
+						paymentforms.map((e, i) => {
+							return <React.Fragment key={i}>
+								<div className="col-12 col-sm-12 col-md-12 col-lg-12">
+									<div className="row">
+										<div className="col-12 col-sm-12 col-md-12 col-lg-12">
+											<div className="row">
+												<div className="col-12 col-sm-6 col-md-3 col-lg-3">
+													<div className="form-group">
+														<input id="check-date" name="checkdate" type="date" placeholder="12/31/1999" className="form-control input-md" required />
+													</div>
+												</div>
+												<div className="col-12 col-sm-6 col-md-3 col-lg-2">
+													<div className="form-group">
+														<input id="payee" name="payee" type="text" className="form-control input-md" required />
+													</div>
+												</div>
+												<div className="col-12 col-sm-6 col-md-3 col-lg-2">
+													<div className="form-group">
+														<input id="check-number" name="checknumber" type="text" className="form-control input-md" required />
+													</div>
+												</div>
+												<div className="col-12 col-sm-6 col-md-2 col-lg-2">
+													<div className="form-group">
+														<input id="pmtamt" name="pmtamt" type="text" className="form-control input-md" required />
+													</div>
+												</div>
+												<div className="col-12 col-sm-6 col-md-3 col-lg-2">
+													<div className="form-group">
+														<input id="memo" name="memo" type="text" className="form-control input-md" required />
+													</div>
+												</div>
+												<div className="col-12 col-sm-12 col-md-2 col-lg-1" >
+													<a className="btn btn-danger btn-block round-btn" onClick={() => this.removePayment(i)}>-</a>
+												</div>
+											</div>
+											<hr className="seperate-bar" />
+										</div>
+									</div>
+								</div>
+							</React.Fragment>
+						})
+					}
+
+					<div className="col-12 col-sm-12 col-md-12 col-lg-12">
+						<div className="row">
+							<div className="col-12 col-sm-12 col-md-12 col-lg-12 center">
+								<a className="btn btn-success btn-block round-btn" onClick={this.addPayment}>+</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div >
+		)
+	}
+}
+
 class Form extends React.Component {
 
 	constructor() {
@@ -214,21 +320,38 @@ class Form extends React.Component {
 		var doc_types = [];
 		var counties = [];
 		var surface_site_sizes = [];
+		var checknumbers = [], checkdates = [], payees = [], pmtamts = [], paymemos = [], payments = [];
 
 		// Iterate array and assign values to appropriate objects.
 		data.forEach(
 			(value, key) => {
-				if (key === 'documenttypes') {
-					doc_types.push(value);
-				}
-				else if (key === 'counties') {
-					counties.push(value);
-				}
-				else if (key === 'surfacesitesizes') {
-					surface_site_sizes.push(value);
-				}
-				else {
-					object[key] = value;
+				switch (key) {
+					case 'documenttypes':
+						doc_types.push(value);
+						break;
+					case 'counties':
+						counties.push(value);
+						break;
+					case 'surfacesitesizes':
+						surface_site_sizes.push(value);
+						break;
+					case 'checknumber':
+						checknumbers.push(value);
+						break;
+					case 'checkdate':
+						checkdates.push(value);
+						break;
+					case 'payee':
+						payees.push(value);
+						break;
+					case 'pmtamt':
+						pmtamts.push(value);
+						break;
+					case 'memo':
+						paymemos.push(value);
+						break;
+					default:
+						object[key] = value;
 				}
 			}
 		);
@@ -248,6 +371,19 @@ class Form extends React.Component {
 		for (let i = 0; i < surface_site_sizes.length; i++) {
 			object['surfacesitesizes' + i] = surface_site_sizes[i];
 		}
+
+		// payments
+		for (let i = 0; i < checknumbers.length; i++) {
+			payments.push({
+				checknumber: checknumbers[i],
+				checkdate: checkdates[i],
+				payee: payees[i],
+				pmtamt: pmtamts[i],
+				memo: paymemos[i]
+			})
+		}
+
+		object['payments'] = JSON.stringify(payments);
 
 		// Send JSON'ified Object to server.
 		fetch('//' + window.location.hostname + ':5000/api/land', {
@@ -461,24 +597,6 @@ class Form extends React.Component {
 							</div>
 						</div>
 
-						{/*Owner Check #*/}
-						<div className="col-md-4 form-group">
-							<label className="col-md-12 control-label" htmlFor="check-number">Owner Check #</label>
-							<div className="col-md-12">
-								<input id="check-number" name="checknumber" type="text" placeholder="1000" className="form-control input-md" />
-							</div>
-						</div>
-					</div>
-					<div className="row mt-2">
-						{/*Owner Check Date*/}
-
-						<div className="col-md-4 form-group">
-							<label className="col-md-12 control-label" htmlFor="check-date">Owner Check Date</label>
-							<div className="col-md-12">
-								<input id="check-date" name="checkdate" type="date" placeholder="12/31/1999" className="form-control input-md" />
-							</div>
-						</div>
-
 						{/*Permit ID*/}
 						<div className="col-md-4 form-group">
 							<label className="col-md-12 control-label" htmlFor="permit">Permit ID</label>
@@ -486,9 +604,9 @@ class Form extends React.Component {
 								<input id="permit" name="permit" type="text" placeholder="" className="form-control input-md" />
 							</div>
 						</div>
-
 					</div>
-
+					
+					<PaymentForm />
 
 					<div className="row mt-2">
 						<div className="col-md-4 text-center">
@@ -516,20 +634,20 @@ class App extends React.Component {
 
 // ========================================
 
-ReactDOM.render(
-	<App />,
-	document.getElementById('root')
-);
+// ReactDOM.render(
+// 	<App />,
+// 	document.getElementById('root')
+// );
 
 
-// const hist = createBrowserHistory();
-// ReactDOM.render((
-// 	<Router history={hist}>
-// 		<Switch>
-// 			{localStorage.token ?
-// 				<Route path="/index" component={App} /> :
-// 				<Route path="/" component={Login} />
-// 			}
-// 		</Switch>
-// 	</Router>
-// ), document.getElementById('root'))
+const hist = createBrowserHistory();
+ReactDOM.render((
+	<Router history={hist}>
+		<Switch>
+			{localStorage.token ?
+				<Route path="/index" component={App} /> :
+				<Route path="/" component={Login} />
+			}
+		</Switch>
+	</Router>
+), document.getElementById('root'))
