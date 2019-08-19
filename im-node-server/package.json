@@ -1,0 +1,20 @@
+{
+  "name": "im-node-server",
+  "version": "1.0.0",
+  "description": "REST endpoint for managing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": {
+    "name": "Jeff Bowie"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "knex": "^0.16.5",
+    "mssql": "^5.1.0"
+  }
+}

@@ -1,0 +1,32 @@
+@media all and (min-width: 480px) {
+  .Login {
+    padding: 60px 0;
+  }
+
+  .Login form {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+}
+
+.mt-60 {
+  margin-top: 74px; 
+}
+
+.MuiAvatar-colorDefault{
+  margin: auto;
+  background-color: #f50057!important;
+}
+
+.text-center{
+  margin-top: 10px!important;
+  text-align: center;
+}
+
+form {
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 20px!important;
+}
